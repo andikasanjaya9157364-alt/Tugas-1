@@ -13,7 +13,7 @@ class CartItem {
 
   Map<String, dynamic> toMap() {
     return {
-      'productId': product.id,
+      'product': product.toMap(),
       'quantity': quantity,
     };
   }

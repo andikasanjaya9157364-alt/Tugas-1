@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "831577314310",
+    "project_id": "kasir-cerdas-andika",
+    "storage_bucket": "kasir-cerdas-andika.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:831577314310:android:c0e62406bb6039bb1b9f87",
+        "android_client_info": {
+          "package_name": "com.example.kasir_cerdas"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgc-vIHVuSH4SCjqyP6tvkb2fqOs1YiSc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
