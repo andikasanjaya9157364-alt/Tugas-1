@@ -33,10 +33,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
     cartProvider.clearCart();
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Pembayaran berhasil!')),
+      SnackBar(
+        content: Text('Pembayaran berhasil! Total: Rp ${total.toStringAsFixed(0)}'),
+        duration: const Duration(seconds: 3),
+      ),
     );
 
-    Navigator.popUntil(context, (route) => route.isFirst);
+    // Navigate back to home
+    Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
   }
 
   @override
@@ -64,10 +68,40 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 itemCount: items.length,
                 itemBuilder: (context, index) {
                   final item = items[index];
-                  return ListTile(
-                    title: Text(item.product.name),
-                    subtitle: Text('${item.quantity} x Rp ${item.product.price.toStringAsFixed(0)}'),
-                    trailing: Text('Rp ${item.total.toStringAsFixed(0)}'),
+                  return Card(
+                    margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                    child: ListTile(
+                      leading: item.product.imageUrl != null
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: Image.asset(
+                                item.product.imageUrl!,
+                                width: 50,
+                                height: 50,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Container(
+                                    width: 50,
+                                    height: 50,
+                                    color: Colors.grey[300],
+                                    child: const Icon(Icons.image, color: Colors.grey),
+                                  );
+                                },
+                              ),
+                            )
+                          : Container(
+                              width: 50,
+                              height: 50,
+                              color: Colors.grey[300],
+                              child: const Icon(Icons.image, color: Colors.grey),
+                            ),
+                      title: Text(item.product.name),
+                      subtitle: Text('${item.quantity} x Rp ${item.product.price.toStringAsFixed(0)}'),
+                      trailing: Text(
+                        'Rp ${item.total.toStringAsFixed(0)}',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
                   );
                 },
               ),

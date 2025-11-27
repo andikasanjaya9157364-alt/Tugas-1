@@ -27,30 +27,57 @@ class CartScreen extends StatelessWidget {
                     itemCount: items.length,
                     itemBuilder: (context, index) {
                       final item = items[index];
-                      return ListTile(
-                        title: Text(item.product.name),
-                        subtitle: Text('Rp ${item.product.price.toStringAsFixed(0)} x ${item.quantity}'),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.remove),
-                              onPressed: () {
-                                if (item.quantity > 1) {
-                                  cartProvider.updateQuantity(item.product.id, item.quantity - 1);
-                                } else {
-                                  cartProvider.removeItem(item.product.id);
-                                }
-                              },
-                            ),
-                            Text('${item.quantity}'),
-                            IconButton(
-                              icon: const Icon(Icons.add),
-                              onPressed: () {
-                                cartProvider.updateQuantity(item.product.id, item.quantity + 1);
-                              },
-                            ),
-                          ],
+                      return Card(
+                        margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                        child: ListTile(
+                          leading: item.product.imageUrl != null
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  child: Image.asset(
+                                    item.product.imageUrl!,
+                                    width: 50,
+                                    height: 50,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Container(
+                                        width: 50,
+                                        height: 50,
+                                        color: Colors.grey[300],
+                                        child: const Icon(Icons.image, color: Colors.grey),
+                                      );
+                                    },
+                                  ),
+                                )
+                              : Container(
+                                  width: 50,
+                                  height: 50,
+                                  color: Colors.grey[300],
+                                  child: const Icon(Icons.image, color: Colors.grey),
+                                ),
+                          title: Text(item.product.name),
+                          subtitle: Text('Rp ${item.product.price.toStringAsFixed(0)} x ${item.quantity} = Rp ${item.total.toStringAsFixed(0)}'),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.remove),
+                                onPressed: () {
+                                  if (item.quantity > 1) {
+                                    cartProvider.updateQuantity(item.product.id, item.quantity - 1);
+                                  } else {
+                                    cartProvider.removeItem(item.product.id);
+                                  }
+                                },
+                              ),
+                              Text('${item.quantity}'),
+                              IconButton(
+                                icon: const Icon(Icons.add),
+                                onPressed: () {
+                                  cartProvider.updateQuantity(item.product.id, item.quantity + 1);
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     },

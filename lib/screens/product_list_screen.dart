@@ -15,6 +15,7 @@ class ProductListScreen extends StatefulWidget {
 class _ProductListScreenState extends State<ProductListScreen> {
   final FirestoreService _firestoreService = FirestoreService();
   List<Product> _products = [];
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -23,10 +24,28 @@ class _ProductListScreenState extends State<ProductListScreen> {
   }
 
   Future<void> _loadProducts() async {
-    final products = await _firestoreService.getProducts();
     setState(() {
-      _products = products;
+      _isLoading = true;
     });
+
+    try {
+      final products = await _firestoreService.getProducts();
+      if (mounted) {
+        setState(() {
+          _products = products;
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error loading products: $e')),
+        );
+      }
+    }
   }
 
   @override
@@ -47,33 +66,118 @@ class _ProductListScreenState extends State<ProductListScreen> {
           ),
         ],
       ),
-      body: _products.isEmpty
-          ? const Center(child: Text('Belum ada produk'))
-          : ListView.builder(
-              itemCount: _products.length,
-              itemBuilder: (context, index) {
-                final product = _products[index];
-                return ListTile(
-                  title: Text(product.name),
-                  subtitle: Text('Rp ${product.price.toStringAsFixed(0)}'),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text('Stok: ${product.stock}'),
-                      IconButton(
-                        icon: const Icon(Icons.add_shopping_cart),
-                        onPressed: () {
-                          context.read<CartProvider>().addItem(product);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('${product.name} ditambahkan ke keranjang')),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : _products.isEmpty
+              ? const Center(child: Text('Belum ada produk'))
+             : RefreshIndicator(
+                 onRefresh: _loadProducts,
+                 child: ListView.builder(
+                   itemCount: _products.length,
+                   itemBuilder: (context, index) {
+                     final product = _products[index];
+                     return Card(
+                       margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                       child: ListTile(
+                         leading: product.imageUrl != null
+                             ? ClipRRect(
+                                 borderRadius: BorderRadius.circular(8.0),
+                                 child: Image.asset(
+                                   product.imageUrl!,
+                                   width: 60,
+                                   height: 60,
+                                   fit: BoxFit.cover,
+                                   errorBuilder: (context, error, stackTrace) {
+                                     return Container(
+                                       width: 60,
+                                       height: 60,
+                                       color: Colors.grey[300],
+                                       child: const Icon(Icons.image, color: Colors.grey),
+                                     );
+                                   },
+                                 ),
+                               )
+                             : Container(
+                                 width: 60,
+                                 height: 60,
+                                 color: Colors.grey[300],
+                                 child: const Icon(Icons.image, color: Colors.grey),
+                               ),
+                         title: Text(product.name),
+                         subtitle: Column(
+                           crossAxisAlignment: CrossAxisAlignment.start,
+                           children: [
+                             Text('Rp ${product.price.toStringAsFixed(0)}'),
+                             Text('Stok: ${product.stock}', style: const TextStyle(fontSize: 12)),
+                           ],
+                         ),
+                         trailing: IconButton(
+                           icon: const Icon(Icons.add_shopping_cart),
+                           onPressed: () {
+                             context.read<CartProvider>().addItem(product);
+                             ScaffoldMessenger.of(context).showSnackBar(
+                               SnackBar(content: Text('${product.name} ditambahkan ke keranjang')),
+                             );
+                           },
+                         ),
+                         onTap: () {
+                           // Show product details
+                           showDialog(
+                             context: context,
+                             builder: (context) => AlertDialog(
+                               title: Text(product.name),
+                               content: Column(
+                                 mainAxisSize: MainAxisSize.min,
+                                 children: [
+                                   if (product.imageUrl != null)
+                                     ClipRRect(
+                                       borderRadius: BorderRadius.circular(8.0),
+                                       child: Image.asset(
+                                         product.imageUrl!,
+                                         height: 150,
+                                         fit: BoxFit.cover,
+                                         errorBuilder: (context, error, stackTrace) {
+                                           return Container(
+                                             height: 150,
+                                             color: Colors.grey[300],
+                                             child: const Icon(Icons.image, color: Colors.grey, size: 50),
+                                           );
+                                         },
+                                       ),
+                                     ),
+                                   const SizedBox(height: 16),
+                                   Text('Harga: Rp ${product.price.toStringAsFixed(0)}'),
+                                   Text('Stok: ${product.stock}'),
+                                   if (product.description != null) ...[
+                                     const SizedBox(height: 8),
+                                     Text(product.description!),
+                                   ],
+                                 ],
+                               ),
+                               actions: [
+                                 TextButton(
+                                   onPressed: () => Navigator.pop(context),
+                                   child: const Text('Tutup'),
+                                 ),
+                                 ElevatedButton(
+                                   onPressed: () {
+                                     Navigator.pop(context);
+                                     context.read<CartProvider>().addItem(product);
+                                     ScaffoldMessenger.of(context).showSnackBar(
+                                       SnackBar(content: Text('${product.name} ditambahkan ke keranjang')),
+                                     );
+                                   },
+                                   child: const Text('Tambah ke Keranjang'),
+                                 ),
+                               ],
+                             ),
+                           );
+                         },
+                       ),
+                     );
+                   },
+                 ),
+               ),
     );
   }
 }

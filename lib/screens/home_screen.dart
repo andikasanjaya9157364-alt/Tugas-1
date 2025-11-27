@@ -31,7 +31,20 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Kasir Cerdas'),
+        title: Row(
+          children: [
+            Image.asset(
+              'assets/images/logo.png',
+              width: 40,
+              height: 40,
+              errorBuilder: (context, error, stackTrace) {
+                return const Icon(Icons.restaurant, size: 40);
+              },
+            ),
+            const SizedBox(width: 12),
+            const Text('Kasir Cerdas'),
+          ],
+        ),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: _screens[_selectedIndex],
