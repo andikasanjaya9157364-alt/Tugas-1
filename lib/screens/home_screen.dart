@@ -4,6 +4,7 @@ import '../providers/cart_provider.dart';
 import 'product_list_screen.dart';
 import 'cart_screen.dart';
 import 'transaction_history_screen.dart';
+import 'settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,6 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
     ProductListScreen(),
     CartScreen(),
     TransactionHistoryScreen(),
+    SettingsScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -67,9 +69,17 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(Icons.history),
             label: 'Riwayat',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Pengaturan',
+          ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: Theme.of(context).primaryColor,
+        unselectedItemColor: Colors.grey.shade600,
+        backgroundColor: Colors.white,
+        elevation: 8,
+        type: BottomNavigationBarType.fixed,
         onTap: _onItemTapped,
       ),
     );
