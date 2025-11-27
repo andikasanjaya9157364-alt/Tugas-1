@@ -5,8 +5,10 @@ import 'package:provider/provider.dart';
 import 'providers/cart_provider.dart';
 import 'providers/theme_provider.dart';
 import 'screens/home_screen.dart';
-import 'screens/welcome_screen.dart';
 import 'services/firestore_service.dart';
+import 'screens/login_screen.dart'; // Tambahan
+import 'screens/splash_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // 🔥 Tambahan wajib
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +23,7 @@ void main() async {
     print('Firebase initialization failed: $e');
   }
 
-  // Initialize data sample ke Firestore (Jika perlu)
+  // Optional: Initialize sample data Firestore
   final firestoreService = FirestoreService();
   await firestoreService.initializeSampleData();
 
@@ -44,9 +46,26 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'Kasir Cerdas',
             theme: themeProvider.currentTheme,
-            initialRoute: '/',
+
+            // 🔥🔥 DITAMBAHKAN TANPA MENGHAPUS KODEMU
+            home: StreamBuilder(
+              stream: FirebaseAuth.instance.authStateChanges(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const SplashScreen();
+                }
+                if (snapshot.hasData) {
+                  return const HomeScreen(); // user sudah login
+                }
+                return const LoginScreen(); // belum login
+              },
+            ),
+
+            // Login jadi halaman pertama (BIARKAN, TIDAK DIHAPUS)
+            initialRoute: '/login',
+
             routes: {
-              '/': (context) => const WelcomeScreen(),
+              '/login': (context) => const LoginScreen(),
               '/home': (context) => const HomeScreen(),
             },
           );
