@@ -12,6 +12,7 @@ class FoodIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     IconData iconData;
     Color backgroundColor;
     Color iconColor;
@@ -19,33 +20,33 @@ class FoodIcon extends StatelessWidget {
     switch (foodName.toLowerCase()) {
       case 'nasi goreng':
         iconData = Icons.rice_bowl;
-        backgroundColor = Colors.orange.shade100;
-        iconColor = Colors.orange.shade800;
+        backgroundColor = isDarkMode ? Colors.orange.shade900 : Colors.orange.shade100;
+        iconColor = isDarkMode ? Colors.orange.shade200 : Colors.orange.shade800;
         break;
       case 'ayam bakar':
         iconData = Icons.restaurant_menu;
-        backgroundColor = Colors.red.shade100;
-        iconColor = Colors.red.shade800;
+        backgroundColor = isDarkMode ? Colors.red.shade900 : Colors.red.shade100;
+        iconColor = isDarkMode ? Colors.red.shade200 : Colors.red.shade800;
         break;
       case 'es teh manis':
         iconData = Icons.local_cafe;
-        backgroundColor = Colors.brown.shade100;
-        iconColor = Colors.brown.shade800;
+        backgroundColor = isDarkMode ? Colors.brown.shade900 : Colors.brown.shade100;
+        iconColor = isDarkMode ? Colors.brown.shade200 : Colors.brown.shade800;
         break;
       case 'bakso':
         iconData = Icons.soup_kitchen;
-        backgroundColor = Colors.blue.shade100;
-        iconColor = Colors.blue.shade800;
+        backgroundColor = isDarkMode ? Colors.blue.shade900 : Colors.blue.shade100;
+        iconColor = isDarkMode ? Colors.blue.shade200 : Colors.blue.shade800;
         break;
       case 'jus jeruk':
         iconData = Icons.local_bar;
-        backgroundColor = Colors.orange.shade200;
-        iconColor = Colors.deepOrange.shade800;
+        backgroundColor = isDarkMode ? Colors.deepOrange.shade900 : Colors.orange.shade200;
+        iconColor = isDarkMode ? Colors.deepOrange.shade200 : Colors.deepOrange.shade800;
         break;
       default:
         iconData = Icons.restaurant;
-        backgroundColor = Colors.grey.shade100;
-        iconColor = Colors.grey.shade800;
+        backgroundColor = isDarkMode ? Colors.grey.shade800 : Colors.grey.shade100;
+        iconColor = isDarkMode ? Colors.grey.shade300 : Colors.grey.shade800;
     }
 
     return Container(
@@ -56,7 +57,7 @@ class FoodIcon extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Theme.of(context).shadowColor.withOpacity(0.1),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),

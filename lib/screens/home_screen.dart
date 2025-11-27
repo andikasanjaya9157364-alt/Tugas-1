@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: const Icon(
@@ -76,8 +76,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Theme.of(context).primaryColor,
-        unselectedItemColor: Colors.grey.shade600,
-        backgroundColor: Colors.white,
+        unselectedItemColor: Theme.of(context).brightness == Brightness.dark
+            ? Colors.grey.shade400
+            : Colors.grey.shade600,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 8,
         type: BottomNavigationBarType.fixed,
         onTap: _onItemTapped,

@@ -97,7 +97,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
             end: Alignment.bottomCenter,
             colors: [
               Theme.of(context).primaryColor.withOpacity(0.1),
-              Colors.white,
+              Theme.of(context).scaffoldBackgroundColor,
             ],
           ),
         ),
@@ -111,11 +111,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
+                        color: Theme.of(context).shadowColor.withOpacity(0.1),
                         blurRadius: 10,
                         offset: const Offset(0, 4),
                       ),
@@ -138,17 +138,17 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 size: 28),
                           ),
                           const SizedBox(width: 16),
-                          const Expanded(
+                          Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Ringkasan Pembayaran',
+                                const Text('Ringkasan Pembayaran',
                                     style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold)),
                                 Text('Periksa pesanan Anda',
                                     style: TextStyle(
-                                        fontSize: 14, color: Colors.grey)),
+                                        fontSize: 14, color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.7))),
                               ],
                             ),
                           ),
@@ -160,7 +160,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         decoration: BoxDecoration(
                           color: Theme.of(context)
                               .primaryColor
-                              .withOpacity(0.05),
+                              .withOpacity(Theme.of(context).brightness == Brightness.dark ? 0.1 : 0.05),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Row(
@@ -199,7 +199,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         margin: const EdgeInsets.only(bottom: 12),
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Colors.grey.shade50,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Theme.of(context).cardColor
+                              : Colors.grey.shade50,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Row(
@@ -234,7 +236,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   Text(
                                     '${item.quantity} x Rp ${item.product.price.toStringAsFixed(0)}',
                                     style: TextStyle(
-                                      color: Colors.grey.shade600,
+                                      color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7),
                                       fontSize: 14,
                                     ),
                                   ),
@@ -266,9 +268,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Colors.grey.shade50,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Theme.of(context).cardColor
+                        : Colors.grey.shade50,
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.grey.shade300),
+                    border: Border.all(color: Theme.of(context).dividerColor),
                   ),
                   child: Column(
                     children: [
@@ -320,7 +324,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 Text(
                   'Pembayaran akan diproses secara aman',
                   style: TextStyle(
-                      fontSize: 12, color: Colors.grey.shade600),
+                      fontSize: 12, color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.7)),
                   textAlign: TextAlign.center,
                 ),
               ],
