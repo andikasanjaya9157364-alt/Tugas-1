@@ -58,17 +58,25 @@ class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProvider
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset(
-                  'assets/images/logo.png',
+                Container(
                   width: 120,
                   height: 120,
-                  errorBuilder: (context, error, stackTrace) {
-                    return const Icon(
-                      Icons.restaurant,
-                      size: 120,
-                      color: Colors.white,
-                    );
-                  },
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(60),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 10,
+                        offset: const Offset(0, 5),
+                      ),
+                    ],
+                  ),
+                  child: const Icon(
+                    Icons.restaurant,
+                    size: 80,
+                    color: Colors.deepPurple,
+                  ),
                 ),
                 const SizedBox(height: 24),
                 const Text(

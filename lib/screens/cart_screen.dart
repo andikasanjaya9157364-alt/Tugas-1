@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../providers/cart_provider.dart';
 import '../services/firestore_service.dart';
 import '../models/transaction.dart';
+import '../widgets/food_icon.dart';
 import 'package:uuid/uuid.dart';
 import 'payment_screen.dart';
 
@@ -39,21 +40,11 @@ class CartScreen extends StatelessWidget {
                                     height: 50,
                                     fit: BoxFit.cover,
                                     errorBuilder: (context, error, stackTrace) {
-                                      return Container(
-                                        width: 50,
-                                        height: 50,
-                                        color: Colors.grey[300],
-                                        child: const Icon(Icons.image, color: Colors.grey),
-                                      );
+                                      return FoodIcon(foodName: item.product.name, size: 50);
                                     },
                                   ),
                                 )
-                              : Container(
-                                  width: 50,
-                                  height: 50,
-                                  color: Colors.grey[300],
-                                  child: const Icon(Icons.image, color: Colors.grey),
-                                ),
+                              : FoodIcon(foodName: item.product.name, size: 50),
                           title: Text(item.product.name),
                           subtitle: Text('Rp ${item.product.price.toStringAsFixed(0)} x ${item.quantity} = Rp ${item.total.toStringAsFixed(0)}'),
                           trailing: Row(

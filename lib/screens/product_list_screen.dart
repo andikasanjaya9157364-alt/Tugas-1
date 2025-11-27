@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../models/product.dart';
 import '../providers/cart_provider.dart';
 import '../services/firestore_service.dart';
+import '../widgets/food_icon.dart';
 import 'add_product_screen.dart';
 
 class ProductListScreen extends StatefulWidget {
@@ -88,21 +89,11 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                    height: 60,
                                    fit: BoxFit.cover,
                                    errorBuilder: (context, error, stackTrace) {
-                                     return Container(
-                                       width: 60,
-                                       height: 60,
-                                       color: Colors.grey[300],
-                                       child: const Icon(Icons.image, color: Colors.grey),
-                                     );
+                                     return FoodIcon(foodName: product.name, size: 60);
                                    },
                                  ),
                                )
-                             : Container(
-                                 width: 60,
-                                 height: 60,
-                                 color: Colors.grey[300],
-                                 child: const Icon(Icons.image, color: Colors.grey),
-                               ),
+                             : FoodIcon(foodName: product.name, size: 60),
                          title: Text(product.name),
                          subtitle: Column(
                            crossAxisAlignment: CrossAxisAlignment.start,
@@ -129,22 +120,19 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                content: Column(
                                  mainAxisSize: MainAxisSize.min,
                                  children: [
-                                   if (product.imageUrl != null)
-                                     ClipRRect(
-                                       borderRadius: BorderRadius.circular(8.0),
-                                       child: Image.asset(
-                                         product.imageUrl!,
-                                         height: 150,
-                                         fit: BoxFit.cover,
-                                         errorBuilder: (context, error, stackTrace) {
-                                           return Container(
-                                             height: 150,
-                                             color: Colors.grey[300],
-                                             child: const Icon(Icons.image, color: Colors.grey, size: 50),
-                                           );
-                                         },
-                                       ),
-                                     ),
+                                   product.imageUrl != null
+                                       ? ClipRRect(
+                                           borderRadius: BorderRadius.circular(12.0),
+                                           child: Image.asset(
+                                             product.imageUrl!,
+                                             height: 200,
+                                             fit: BoxFit.cover,
+                                             errorBuilder: (context, error, stackTrace) {
+                                               return FoodIcon(foodName: product.name, size: 150);
+                                             },
+                                           ),
+                                         )
+                                       : FoodIcon(foodName: product.name, size: 150),
                                    const SizedBox(height: 16),
                                    Text('Harga: Rp ${product.price.toStringAsFixed(0)}'),
                                    Text('Stok: ${product.stock}'),

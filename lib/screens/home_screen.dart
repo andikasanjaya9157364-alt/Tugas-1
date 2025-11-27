@@ -33,13 +33,18 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Row(
           children: [
-            Image.asset(
-              'assets/images/logo.png',
+            Container(
               width: 40,
               height: 40,
-              errorBuilder: (context, error, stackTrace) {
-                return const Icon(Icons.restaurant, size: 40);
-              },
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Icon(
+                Icons.restaurant,
+                size: 32,
+                color: Colors.deepPurple,
+              ),
             ),
             const SizedBox(width: 12),
             const Text('Kasir Cerdas'),

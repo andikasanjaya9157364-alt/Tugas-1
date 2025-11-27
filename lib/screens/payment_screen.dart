@@ -4,6 +4,7 @@ import 'package:uuid/uuid.dart';
 import '../providers/cart_provider.dart';
 import '../models/transaction.dart';
 import '../services/firestore_service.dart';
+import '../widgets/food_icon.dart';
 
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen({super.key});
@@ -80,21 +81,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 height: 50,
                                 fit: BoxFit.cover,
                                 errorBuilder: (context, error, stackTrace) {
-                                  return Container(
-                                    width: 50,
-                                    height: 50,
-                                    color: Colors.grey[300],
-                                    child: const Icon(Icons.image, color: Colors.grey),
-                                  );
+                                  return FoodIcon(foodName: item.product.name, size: 50);
                                 },
                               ),
                             )
-                          : Container(
-                              width: 50,
-                              height: 50,
-                              color: Colors.grey[300],
-                              child: const Icon(Icons.image, color: Colors.grey),
-                            ),
+                          : FoodIcon(foodName: item.product.name, size: 50),
                       title: Text(item.product.name),
                       subtitle: Text('${item.quantity} x Rp ${item.product.price.toStringAsFixed(0)}'),
                       trailing: Text(
